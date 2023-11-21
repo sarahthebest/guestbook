@@ -12,21 +12,21 @@ let httpServer = app.listen(port, function () {
 app.use(express.urlencoded({ extended: true }));
 
 app.get("/", function (req, res) {
-  res.sendFile(__dirname + "/startpage.html");
+  res.sendFile(path.join(__dirname, "/public/startpage.html"));
 });
 
 const path = require('path')
 app.use('/static', express.static(path.join(__dirname, 'public')));
 
 app.get("/guestbook", function (req, res) {
-  res.sendFile(__dirname + "/guestbook.html");
+  res.sendFile(path.join(__dirname, "/public/guestbook.html"));
 });
 
 app.get("/startpage", function (req, res) {
-  res.sendFile(__dirname + "/startpage.html");
+  res.sendFile(path.join(__dirname, "/public/startpage.html"));
 });
 
-app.post("/guestbook", function (req, res){
+app.post("public\guestbook.html", function (req, res){
   // let name = req.body.name;
   // let email = req.body.email;
   // let title = req.body.title;
