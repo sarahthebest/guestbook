@@ -1,0 +1,25 @@
+{
+    "messages": [
+        {
+            "name": "Benjamin",
+            "address": "Bongovägen",
+            "nummer": 123123123,
+            "message": "oisandoiasnd"
+        },
+        {
+            "name": "Benjamin",
+            "address": "Bongovägen",
+            "nummer": 123123123
+        },
+        {
+            "name": "Benjamin",
+            "address": "Bongovägen",
+            "nummer": 123123123
+        },
+        {
+            "name": "Benjamin",
+            "address": "Bongovägen",
+            "nummer": 123123123
+        }
+    ]
+}
