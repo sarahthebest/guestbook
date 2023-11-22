@@ -4,19 +4,22 @@ let fs = require("fs");
 let app = express();
 let port = 8080;
 
+const path = require("path");
+app.use(express.static("public"));
+app.use(express.urlencoded({ extended: true }));
+
+app.use((req, res, next) => {
+  "default-src 'self'; style-src 'self' https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/;"
+  next();
+});
 
 let httpServer = app.listen(port, function () {
   console.log(`Webbserver körs på port ${port}`);
 });
 
-app.use(express.urlencoded({ extended: true }));
-
 app.get("/", function (req, res) {
   res.sendFile(path.join(__dirname, "/public/startpage.html"));
 });
-
-const path = require('path')
-app.use('/static', express.static(path.join(__dirname, 'public')));
 
 app.get("/guestbook", function (req, res) {
   res.sendFile(path.join(__dirname, "/public/guestbook.html"));
@@ -26,12 +29,8 @@ app.get("/startpage", function (req, res) {
   res.sendFile(path.join(__dirname, "/public/startpage.html"));
 });
 
-app.post("public\guestbook.html", function (req, res){
-  // let name = req.body.name;
-  // let email = req.body.email;
-  // let title = req.body.title;
-  // let message = req.body.message;
-  let messagesFile = fs.readFileSync("messages.json")
+app.post("/guestbook", function (req, res) {
+  let messagesFile = fs.readFileSync("messages.json");
   let data = JSON.parse(messagesFile);
   let messages = data["messages"];
 
@@ -39,11 +38,15 @@ app.post("public\guestbook.html", function (req, res){
     name: req.body.name,
     email: req.body.email,
     title: req.body.title,
-    message: req.body.message
-  }
-  
-  
-  const submissionJSON = JSON.stringify(submission);
+    message: req.body.message,
+  };
 
-  fs.writeFile("messages.json", )  
+  messages.push(submission);
+  data["messages"] = messages;
+
+  const submissionJSON = JSON.stringify(data);
+  fs.writeFileSync("messages.json", submissionJSON);
+
+  res.redirect("/guestbook");
+
 });
