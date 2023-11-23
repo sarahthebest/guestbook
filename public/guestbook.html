@@ -13,11 +13,11 @@
     <title>Gästbok</title>
   </head>
   <body>
-    <div id="container" class="col-10 mx-auto mt-5 p-5 border shadow rounded">
+    <div id="container" class="col-11 mx-auto mt-5 p-5 border shadow rounded">
       <div class="my-2" id="form-messages"></div>
       <div id="title-wrap" class="col-12 d-flex flex-row mb-3 text-center">
         <h1 class="">Write your message hehe hiho</h1>
-        <form id="start-btn" class="my-auto" action="startpage">
+        <form for="start-btn" id="start-btn" class="my-auto" action="startpage">
           <button class="btn btn-outline-primary rounded">
             Start page
           </button>
@@ -27,11 +27,12 @@
         <div class="input-group mb-3">
           <span class="input-group-text">Full name</span>
           <label for="name" class="form-label"> </label>
-          <input type="text" class="form-control rounded-end" name="name" />
+          <input type="text" class="form-control rounded-end" id="name" name="name" />
           <span class="input-group-text rounded-start ms-2">Email</span>
           <label for="email" class="form-label"></label>
           <input
             type="email"
+            id="email"
             class="form-control"
             name="email"
             autocomplete="email"
@@ -39,11 +40,11 @@
         </div>
         <div class="mb-3 col-3">
           <label for="title" class="form-label">Message Title</label>
-          <input type="text" class="form-control" name="title" />
+          <input type="text" class="form-control" id="title" name="title" />
         </div>
         <div class="mb-3">
           <label for="message" class="form-label">Write your message...</label>
-          <textarea class="form-control" name="message" rows="3"></textarea>
+          <textarea class="form-control" id="message" name="message" rows="3"></textarea>
         </div>
         <div id="buttonWrap" class="text-center">
           <button

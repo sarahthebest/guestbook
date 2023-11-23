@@ -1,5 +1,6 @@
 let express = require("express");
 let fs = require("fs");
+let mysql = require("mysql");
 
 let app = express();
 let port = 8080;
@@ -9,7 +10,7 @@ app.use(express.static("public"));
 app.use(express.urlencoded({ extended: true }));
 
 app.use((req, res, next) => {
-  "default-src 'self'; style-src 'self' https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/;"
+  "default-src*; style-src 'self' *;"
   next();
 });
 
