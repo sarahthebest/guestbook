@@ -22,15 +22,15 @@ app.get("/", function (req, res) {
   res.sendFile(path.join(__dirname, "/public/startpage.html"));
 });
 
-app.get("/guestbook", function (req, res) {
-  res.sendFile(path.join(__dirname, "/public/guestbook.html"));
+app.get("/guestforum", function (req, res) {
+  res.sendFile(path.join(__dirname, "/public/guestforum.html"));
 });
 
 app.get("/startpage", function (req, res) {
   res.sendFile(path.join(__dirname, "/public/startpage.html"));
 });
 
-app.post("/guestbook", function (req, res) {
+app.post("/guestforum", function (req, res) {
   let messagesFile = fs.readFileSync("messages.json");
   let data = JSON.parse(messagesFile);
   let messages = data["messages"];
@@ -48,6 +48,6 @@ app.post("/guestbook", function (req, res) {
   const submissionJSON = JSON.stringify(data);
   fs.writeFileSync("messages.json", submissionJSON);
 
-  res.redirect("/guestbook");
+  res.redirect("/guestforum");
 
 });
