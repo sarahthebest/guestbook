@@ -62,9 +62,9 @@ app.post("/guestforum", function (req, res) {
     database: "test",
   });
 
+  // skriva till databasen
   con.connect(function (err) {
     const currentDate = new Date().toDateString();
-    // skriv till databasen
     console.log("Uppkopplad till databas!");
     let sql = `INSERT INTO messages (name, email, title, message, date)
     VALUES ('${req.body.name}', '${req.body.email}', '${req.body.title}', '${req.body.message}', '${currentDate}')`;
@@ -99,3 +99,45 @@ app.post("/guestforum", function (req, res) {
 //   res.redirect("/guestforum");
 
 // });
+
+con = mysql.createConnection({
+  host: "localhost", // databas-serverns IP-adress
+  user: "root", // standardanvändarnamn för XAMPP
+  password: "", // standardlösenord för XAMPP
+  database: "test", // ÄNDRA TILL NAMN PÅ ER EGEN DATABAS
+  multipleStatements: true, // OBS: måste tillåta att vi kör flera sql-anrop i samma query
+});
+
+app.post("/users", function (req, res) {
+  // kod för att validera input
+  let fields = ["id", "username", "password", "name", "email"]; // ändra eventuellt till namn på er egen databastabells kolumner
+  for (let key in req.body) {
+    if (!fields.includes(key)) {
+      res.status(400).send("Unknown field: " + key);
+      return; // avslutar metoden
+    }
+  }
+  // kod för att hantera anrop
+  let sql = `INSERT INTO users (id, username, password, name, email)
+  VALUES ('${req.body.id}', 
+    VALUES ('${req.body.username}', 
+    '${req.body.password}',
+    '${req.body.name}',
+    '${req.body.email}');
+    SELECT LAST_INSERT_ID();`; // OBS: innehåller två query: ett insert och ett select
+  console.log(sql);
+
+  con.query(sql, function (err, result, fields) {
+    if (err) throw err;
+    // kod för att hantera retur av data
+    console.log(result);
+    let output = {
+      id: result[0].insertId,
+      username: req.body.username,
+      password: req.body.password,
+      name: req.body.name,
+      email: req.body.email,
+    };
+    res.send(output);
+  });
+});
