@@ -34,6 +34,7 @@ app.get("/guestforum", function (req, res) {
     con.query("SELECT * FROM messages", function (err, result, fields) {
       if (err) throw err;
       fs.readFile("guestforum.html", "utf-8", function (err, data) {
+        let output = "";
         console.log("--------------" + data);
         for (let message of result) {
           output += "<tr>";
