@@ -43,11 +43,11 @@ app.get("/guestforum", function (req, res) {
           }
           output += "</tr>";
         }
-        res.send(output);
+        // res.send(output);
       });
     });
-    res.sendFile(path.join(__dirname, "/public/guestforum.html"));
   });
+  res.sendFile(path.join(__dirname, "/public/guestforum.html"));
 });
 
 app.get("/startpage", function (req, res) {
@@ -75,6 +75,8 @@ app.post("/guestforum", function (req, res) {
     });
   });
 });
+
+// Ofärdig kod för att posta data till JSON.
 
 // app.post("/guestforum", function (req, res) {
 //   let messagesFile = fs.readFileSync("messages.json");
