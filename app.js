@@ -43,11 +43,11 @@ app.get("/guestforum", function (req, res) {
           }
           output += "</tr>";
         }
-        // console.log(result[0].name);
+        res.send(output);
       });
     });
+    res.sendFile(path.join(__dirname, "/public/guestforum.html"));
   });
-  res.sendFile(path.join(__dirname, "/public/guestforum.html"));
 });
 
 app.get("/startpage", function (req, res) {
