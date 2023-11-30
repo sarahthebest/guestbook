@@ -9,10 +9,6 @@ const path = require("path");
 app.use(express.static("public"));
 app.use(express.urlencoded({ extended: true }));
 
-app.use((req, res, next) => {
-  "default-src*; style-src 'self' *;";
-  next();
-});
 
 let httpServer = app.listen(port, function () {
   console.log(`Webbserver körs på port ${port}`);
@@ -29,6 +25,7 @@ app.get("/guestforum", function (req, res) {
     password: "",
     database: "test",
   });
+
   con.connect(function (err) {
     if (err) throw err;
     con.query("SELECT * FROM messages", function (err, result, fields) {
@@ -43,11 +40,15 @@ app.get("/guestforum", function (req, res) {
           }
           output += "</tr>";
         }
-        // res.send(output);
+  
+        res.send(output);
+
+        res.sendFile(path.join(__dirname, "/public/guestforum.html"));
+
       });
     });
   });
-  res.sendFile(path.join(__dirname, "/public/guestforum.html"));
+
 });
 
 app.get("/startpage", function (req, res) {
@@ -61,7 +62,7 @@ app.post("/guestforum", function (req, res) {
     password: "",
     database: "test",
   });
-
+  
   // skriva till databasen
   con.connect(function (err) {
     const currentDate = new Date().toDateString();
@@ -71,12 +72,12 @@ app.post("/guestforum", function (req, res) {
     console.log(sql);
     con.query(sql, function (err, result) {
       if (err) console.log(err);
-      res.redirect("/guestforum"); // gå tillbaka till get-route
+      res.redirect("/public/guestforum.html"); 
     });
   });
 });
 
-// Ofärdig kod för att posta data till JSON.
+// Ofärdig kod för att skriva till JSON fil
 
 // app.post("/guestforum", function (req, res) {
 //   let messagesFile = fs.readFileSync("messages.json");
@@ -99,45 +100,3 @@ app.post("/guestforum", function (req, res) {
 //   res.redirect("/guestforum");
 
 // });
-
-con = mysql.createConnection({
-  host: "localhost", // databas-serverns IP-adress
-  user: "root", // standardanvändarnamn för XAMPP
-  password: "", // standardlösenord för XAMPP
-  database: "test", // ÄNDRA TILL NAMN PÅ ER EGEN DATABAS
-  multipleStatements: true, // OBS: måste tillåta att vi kör flera sql-anrop i samma query
-});
-
-app.post("/users", function (req, res) {
-  // kod för att validera input
-  let fields = ["id", "username", "password", "name", "email"]; // ändra eventuellt till namn på er egen databastabells kolumner
-  for (let key in req.body) {
-    if (!fields.includes(key)) {
-      res.status(400).send("Unknown field: " + key);
-      return; // avslutar metoden
-    }
-  }
-  // kod för att hantera anrop
-  let sql = `INSERT INTO users (id, username, password, name, email)
-  VALUES ('${req.body.id}', 
-    VALUES ('${req.body.username}', 
-    '${req.body.password}',
-    '${req.body.name}',
-    '${req.body.email}');
-    SELECT LAST_INSERT_ID();`; // OBS: innehåller två query: ett insert och ett select
-  console.log(sql);
-
-  con.query(sql, function (err, result, fields) {
-    if (err) throw err;
-    // kod för att hantera retur av data
-    console.log(result);
-    let output = {
-      id: result[0].insertId,
-      username: req.body.username,
-      password: req.body.password,
-      name: req.body.name,
-      email: req.body.email,
-    };
-    res.send(output);
-  });
-});
