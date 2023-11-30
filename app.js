@@ -1,11 +1,11 @@
-let express = require("express");
-let fs = require("fs");
-let mysql = require("mysql");
-
-let app = express();
-let port = 8080;
-
+const express = require("express");
+const fs = require("fs");
+const mysql = require("mysql");
 const path = require("path");
+
+const app = express();
+const port = 8080;
+
 app.use(express.static("public"));
 app.use(express.urlencoded({ extended: true }));
 
