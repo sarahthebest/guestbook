@@ -43,7 +43,12 @@
         </div>
         <div class="mb-3 col-3">
           <label for="title" class="form-label">Message Title</label>
-          <input type="text" class="form-control" id="messageTitle" name="messageTitle" />
+          <input
+            type="text"
+            class="form-control"
+            id="messageTitle"
+            name="messageTitle"
+          />
         </div>
         <div class="mb-3">
           <label for="message" class="form-label">Write your message...</label>
@@ -67,18 +72,17 @@
     </div>
     <div class="col-10 mx-auto border mt-5" id="table-container">
       <table class="table table-light" id="messages-board">
+        <thead class="thead-light">
+          <tr>
+            <th scope="col">Title</th>
+            <th scope="col">Message</th>
+            <th scope="col">Created by</th>
+            <th scope="col">Date</th>
+          </tr>
+        </thead>
         <tbody>
-          <thead class="thead-light">
-            <tr>
-              <th scope="col">Title</th>
-              <th scope="col">Created by</th>
-              <th scope="col">Date</th>
-            </tr>
-          </thead>
+          ***MESSAGES***
         </tbody>
-      </thead>
-      <tbody></tbody>
-    </table>
       </table>
     </div>
     <script

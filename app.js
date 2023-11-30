@@ -27,26 +27,7 @@ app.get("/guestforum", function (req, res) {
   });
 
   con.connect(function (err) {
-    if (err) throw err;
-    con.query("SELECT * FROM messages", function (err, result, fields) {
-      if (err) throw err;
-      fs.readFile("guestforum.html", "utf-8", function (err, data) {
-        let output = "";
-        console.log("--------------" + data);
-        for (let message of result) {
-          output += "<tr>";
-          for (let key in message) {
-            output += `<td>${message[key]}</td>`;
-          }
-          output += "</tr>";
-        }
-  
-        res.send(output);
-
-        res.sendFile(path.join(__dirname, "/public/guestforum.html"));
-
-      });
-    });
+    sendPopulatedGuestbook(con, err, res);
   });
 
 });
@@ -68,14 +49,38 @@ app.post("/guestforum", function (req, res) {
     const currentDate = new Date().toDateString();
     console.log("Uppkopplad till databas!");
     let sql = `INSERT INTO messages (name, email, title, message, date)
-    VALUES ('${req.body.name}', '${req.body.email}', '${req.body.title}', '${req.body.message}', '${currentDate}')`;
+    VALUES ('${req.body.name}', '${req.body.email}', '${req.body.messageTitle}', '${req.body.message}', '${currentDate}')`;
     console.log(sql);
     con.query(sql, function (err, result) {
-      if (err) console.log(err);
-      res.redirect("/public/guestforum.html"); 
+      if (err) console.log(err); 
     });
+
+    sendPopulatedGuestbook(con, err, res);
   });
 });
+
+function sendPopulatedGuestbook(con, err, res){
+  if (err) throw err;
+  con.query("SELECT * FROM messages", function (err, result, fields) {
+    if (err) throw err;
+    fs.readFile("./public/guestforum.html", "utf-8", function (err, data) {
+      
+      let messages = "";
+      for (let message of result) {
+        messages += "<tr>";
+        messages += `<td>${message["Title"]}</td>`;
+        messages += `<td>${message["Message"]}</td>`;
+        messages += `<td>${message["Name"]}</td>`;
+        messages += `<td>${message["Date"]}</td>`;
+        messages += "</tr>";
+      }
+
+      let htmlFile = data;
+      htmlFile = htmlFile.replace("***MESSAGES***", messages);
+      res.send(htmlFile);
+    });
+  });
+}
 
 // Ofärdig kod för att skriva till JSON fil
 
